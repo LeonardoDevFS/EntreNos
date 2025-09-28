@@ -1,17 +1,29 @@
 // Responsável por manipular o HTML e interagir com o usuário.
 
-// Mapeamento dos elementos do HTML
+const welcomeScreen = document.getElementById('welcome-screen');
+const welcomeContinueBtn = document.getElementById('welcome-continue-btn');
 const setupScreen = document.getElementById('setup-screen');
 const gameScreen = document.getElementById('game-screen');
 const resultScreen = document.getElementById('result-screen');
 const consequenceScreen = document.getElementById('consequence-screen');
+const eventScreen = document.getElementById('event-screen');
 const levelUpNotification = document.getElementById('level-up-notification');
 const levelUpTitle = document.getElementById('level-up-title');
 const levelUpSubtitle = document.getElementById('level-up-subtitle');
 
+const pauseBtn = document.getElementById('pause-btn');
+const pauseMenu = document.getElementById('pause-menu');
+const resumeGameBtn = document.getElementById('resume-game-btn');
+const backToMenuBtn = document.getElementById('back-to-menu-btn');
+const changeLevelBtn = document.getElementById('change-level-btn');
+const levelChangeModal = document.getElementById('level-change-modal');
+const pauseLevelSelect = document.getElementById('pause-level-select');
+const confirmLevelChangeBtn = document.getElementById('confirm-level-change-btn');
+
 const player1NameInput = document.getElementById('player1-name');
 const player2NameInput = document.getElementById('player2-name');
 const drinkOptionCheckbox = document.getElementById('drink-option');
+const eventOptionCheckbox = document.getElementById('event-option');
 const startGameBtn = document.getElementById('start-game-btn');
 const gameModeRadios = document.querySelectorAll('input[name="game-mode"]');
 const levelSelectWrapper = document.getElementById('level-select-wrapper');
@@ -31,8 +43,12 @@ const resultType = document.getElementById('result-type');
 const resultText = document.getElementById('result-text');
 const nextTurnBtn = document.getElementById('next-turn-btn');
 const skipBtn = document.getElementById('skip-btn');
+
 const consequenceText = document.getElementById('consequence-text');
 const consequenceDoneBtn = document.getElementById('consequence-done-btn');
+
+const eventText = document.getElementById('event-text');
+const eventDoneBtn = document.getElementById('event-done-btn');
 
 const player1ScoreDisplay = document.getElementById('player1-score-display');
 const player2ScoreDisplay = document.getElementById('player2-score-display');
@@ -63,34 +79,35 @@ async function showScreen(screenId) {
     newScreen.classList.remove('hidden');
     await wait(10);
     newScreen.classList.remove('fading');
+
+    if (screenId === 'welcome-screen' || screenId === 'setup-screen') {
+        pauseBtn.classList.add('hidden');
+    } else {
+        pauseBtn.classList.remove('hidden');
+    }
 }
 
 function initializeUI() {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden', 'fading');
     });
-    const setup = document.getElementById('setup-screen');
-    setup.classList.remove('hidden', 'fading');
+    // AQUI ESTÁ A CORREÇÃO:
+    welcomeScreen.classList.remove('hidden', 'fading');
 }
 
-gameModeRadios.forEach(radio => {
-    radio.addEventListener('change', (event) => {
-        if (event.target.value === 'choose-level') {
-            levelSelectWrapper.classList.remove('hidden');
-        } else {
-            levelSelectWrapper.classList.add('hidden');
-        }
-    });
+welcomeContinueBtn.addEventListener('click', () => {
+    showScreen('setup-screen');
 });
 
 startGameBtn.addEventListener('click', () => {
     const player1 = player1NameInput.value;
     const player2 = player2NameInput.value;
     const drinksEnabled = drinkOptionCheckbox.checked;
+    const eventsEnabled = eventOptionCheckbox.checked;
     const selectedMode = document.querySelector('input[name="game-mode"]:checked').value;
     const selectedLevel = levelSelect.value;
 
-    const gameCanStart = startGame(player1, player2, drinksEnabled, selectedMode, selectedLevel);
+    const gameCanStart = startGame(player1, player2, drinksEnabled, eventsEnabled, selectedMode, selectedLevel);
 
     if (gameCanStart) {
         player1Position.textContent = getPlayers()[0];
@@ -122,21 +139,40 @@ async function showLevelUpAnimation(newLevel) {
 
 async function spinBottle() {
     isSpinning = true;
+    gameInfoText.textContent = 'Processando rodada...';
+    choiceContainer.classList.add('hidden');
+
+    await wait(500);
+
+    const turnResult = nextTurn();
+
+    if (turnResult === 'event') {
+        playSound(levelUpSound);
+        const event = await getEvent();
+        eventText.textContent = event;
+        showScreen('event-screen');
+        isSpinning = false;
+        return;
+    }
+    
     playSound(spinSound);
     gameInfoText.textContent = 'Girando...';
-    choiceContainer.classList.add('hidden');
-    const leveledUp = nextTurn();
-    if (leveledUp) {
+
+    if (turnResult === 'levelUp') {
         await showLevelUpAnimation(getCurrentLevel());
     }
+
     const targetPlayerIndex = currentPlayerIndex;
     const angleToTargetPlayer = (targetPlayerIndex === 0) ? 180 : 0;
     const randomFullSpins = Math.floor(Math.random() * 4) + 3;
     const rotationAmount = (randomFullSpins * 360) + angleToTargetPlayer;
     const newRotation = lastBottleAngle + rotationAmount;
+
     bottle.style.transform = `rotate(${newRotation}deg)`;
     lastBottleAngle = newRotation;
+    
     await wait(4000);
+
     updateGameScreen();
     gameInfoText.textContent = '';
     choiceContainer.classList.remove('hidden');
@@ -168,6 +204,10 @@ consequenceDoneBtn.addEventListener('click', () => {
     proceedToNextRound();
 });
 
+eventDoneBtn.addEventListener('click', () => {
+    proceedToNextRound();
+});
+
 async function showResult(type, content) {
     resultType.textContent = type;
     resultText.textContent = content;
@@ -193,6 +233,34 @@ document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', () => {
         playSound(clickSound);
     });
+});
+
+pauseBtn.addEventListener('click', () => {
+    playSound(clickSound);
+    pauseMenu.classList.remove('hidden');
+});
+
+resumeGameBtn.addEventListener('click', () => {
+    playSound(clickSound);
+    pauseMenu.classList.add('hidden');
+    levelChangeModal.classList.add('hidden');
+});
+
+backToMenuBtn.addEventListener('click', () => {
+    window.location.reload();
+});
+
+changeLevelBtn.addEventListener('click', () => {
+    playSound(clickSound);
+    levelChangeModal.classList.remove('hidden');
+});
+
+confirmLevelChangeBtn.addEventListener('click', () => {
+    const newLevel = pauseLevelSelect.value;
+    setCurrentLevel(newLevel);
+    pauseMenu.classList.add('hidden');
+    levelChangeModal.classList.add('hidden');
+    proceedToNextRound();
 });
 
 function updateScoreDisplay() {

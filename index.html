@@ -13,20 +13,54 @@
 
     <div class="container">
 
+        <button id="pause-btn" class="pause-btn hidden">⚙️</button>
+
+        <div id="pause-menu" class="pause-menu hidden">
+            <div class="card">
+                <h2>Menu</h2>
+                <div class="pause-menu-buttons">
+                    <button id="change-level-btn" class="btn">Trocar de Nível</button>
+                    <button id="back-to-menu-btn" class="btn btn-skip">Voltar ao Início</button>
+                    <button id="resume-game-btn" class="btn">Continuar Jogo</button>
+                </div>
+                <div id="level-change-modal" class="hidden">
+                    <hr>
+                    <p>Escolha o novo nível:</p>
+                    <select id="pause-level-select">
+                        <option value="1">Nível 1: Fofinho</option>
+                        <option value="2">Nível 2: Romântico</option>
+                        <option value="3">Nível 3: Pimentinha</option>
+                        <option value="4">Nível 4: Toques</option>
+                        <option value="5">Nível 5: Intenso</option>
+                    </select>
+                    <button id="confirm-level-change-btn" class="btn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+        
         <div id="level-up-notification" class="level-up-notification hidden">
             <h2 id="level-up-title">Nível 2</h2>
             <p id="level-up-subtitle">As coisas estão esquentando...</p>
         </div>
 
-        <section id="setup-screen" class="screen">
+        <section id="welcome-screen" class="screen">
+            <h1 class="logo">Entre Nós</h1>
+            <p class="subtitle welcome-text">
+                Prepare-se para uma noite de cumplicidade, risadas e novas descobertas.
+                Verdades que conectam, desafios que provocam. Estão prontos?
+            </p>
+            <button id="welcome-continue-btn" class="btn">Começar</button>
+        </section>
+
+        <section id="setup-screen" class="screen hidden">
             <header>
                 <h1 class="logo">Entre Nós</h1>
                 <p class="subtitle">O jogo para apimentar a relação.</p>
             </header>
             <main class="card">
                 <h2>Quem está jogando?</h2>
-                <input type="text" id="player1-name" placeholder="Nome do Jogador 1" required>
-                <input type="text" id="player2-name" placeholder="Nome do Jogador 2" required>
+                <input type="text" id="player1-name" placeholder="Nome do Jogador 1" required autocomplete="off">
+                <input type="text" id="player2-name" placeholder="Nome do Jogador 2" required autocomplete="off">
                 <div class="game-mode-selection">
                     <h3>Como vocês querem jogar?</h3>
                     <div class="radio-group">
@@ -35,7 +69,10 @@
                     </div>
                     <div id="level-select-wrapper" class="hidden"><select id="level-select"><option value="1">Nível 1: Fofinho</option><option value="2">Nível 2: Romântico</option><option value="3">Nível 3: Pimentinha</option><option value="4">Nível 4: Toques</option><option value="5">Nível 5: Intenso</option></select></div>
                 </div>
-                <div class="options"><label for="drink-option"><input type="checkbox" id="drink-option" checked> Habilitar opção de bebida?</label></div>
+                <div class="options">
+                    <label for="drink-option"><input type="checkbox" id="drink-option" checked> Habilitar opção de bebida?</label>
+                    <label for="event-option"><input type="checkbox" id="event-option" checked> Habilitar Cartas de Evento?</label>
+                </div>
                 <button id="start-game-btn" class="btn">Começar o Jogo</button>
             </main>
         </section>
@@ -78,6 +115,14 @@
                 <h2 class="consequence-title">Consequência!</h2>
                 <p id="consequence-text"></p>
                 <button id="consequence-done-btn" class="btn">Cumprido!</button>
+            </div>
+        </section>
+
+        <section id="event-screen" class="screen hidden">
+            <div class="card event-card">
+                <h2 class="event-title">Sorte ou Azar!</h2>
+                <p id="event-text"></p>
+                <button id="event-done-btn" class="btn">Ok!</button>
             </div>
         </section>
 

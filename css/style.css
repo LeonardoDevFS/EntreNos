@@ -19,85 +19,40 @@
 
 body {
     font-family: var(--font-body);
+    /* Cor de fundo sólida como fallback caso a imagem não carregue */
     background-color: #1a1a1a; 
-    color: var(--light-color);
+    color: var(--light-color); /* Alterado para branco para melhor contraste */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
     overflow: hidden;
+
+    /* A MÁGICA DO FUNDO NOVO */
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../assets/background.jpg');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
 }
 
-.card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 2rem 2.5rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    color: var(--light-color);
-}
-
-.subtitle {
-    font-weight: 300;
-    margin-bottom: 2rem;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* --- MUDANÇAS NO HEADER DO JOGO --- */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-    font-weight: 500;
-    min-height: 24px;
-    color: var(--light-color);
-    margin-bottom: 0.5rem; /* Reduzido */
-}
-
-#game-info-text {
-    display: block; /* Garante que o span ocupe a linha inteira */
-    min-height: 24px;
-    margin-bottom: 1rem;
-}
-
-/* NOVO: Estilos do Placar */
-.player-score {
-    background-color: rgba(0,0,0,0.3);
-    padding: 5px 15px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.9rem;
-}
-
-.player-score .player-name {
-    font-weight: 300;
-}
-
-.player-score .score {
-    font-weight: 700;
-    color: var(--skip-color);
-    font-size: 1.1rem;
-}
-/* --- FIM DAS MUDANÇAS --- */
-
 .container {
     width: 100%;
     max-width: 500px;
     text-align: center;
-    position: relative;
+    position: relative; /* Necessário para o posicionamento da notificação */
 }
 
-.screen { transition: opacity 0.4s ease-in-out; }
-.screen.fading { opacity: 0; }
+/* Estilos das Telas */
+.screen {
+    transition: opacity 0.4s ease-in-out;
+}
 
+.screen.fading {
+    opacity: 0;
+}
+
+/* Estilos para a Notificação de Nível */
 .level-up-notification {
     position: absolute;
     top: 50%;
@@ -107,21 +62,27 @@ body {
     color: var(--light-color);
     padding: 2rem 3rem;
     border-radius: var(--border-radius);
-    z-index: 100;
+    z-index: 100; /* Garante que fique acima de tudo */
     width: 90%;
     max-width: 400px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    pointer-events: none;
-    opacity: 0;
+    pointer-events: none; /* Impede que o usuário clique nela */
+    opacity: 0; /* Começa invisível */
 }
 
-.level-up-notification.show { animation: fadeInOut 3s ease-in-out forwards; }
+.level-up-notification.show {
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
 #level-up-notification h2 {
     font-family: var(--font-title);
     color: var(--skip-color);
     margin-bottom: 0.5rem;
 }
-#level-up-notification p { font-weight: 300; }
+
+#level-up-notification p {
+    font-weight: 300;
+}
 
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
@@ -130,19 +91,39 @@ body {
     100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
 }
 
+/* Logo e Títulos */
 .logo {
     font-family: var(--font-title);
     color: var(--primary-color);
     font-size: 3rem;
 }
 
+.subtitle {
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
 h2 {
     font-family: var(--font-title);
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    color: var(--light-color);
+    color: var(--light-color); /* Ajustado para branco */
 }
 
+/* Card Principal */
+.card {
+    background: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+    backdrop-filter: blur(10px); /* O efeito de desfoque */
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 2rem 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    color: var(--light-color); /* Garante que o texto dentro do card seja claro */
+}
+
+/* Formulário de Início */
 input[type="text"] {
     width: 100%;
     padding: 12px 15px;
@@ -155,14 +136,26 @@ input[type="text"] {
     font-size: 1rem;
 }
 
-input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.5); }
+input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 input[type="text"]:focus {
     outline: 2px solid var(--primary-color);
     border-color: transparent;
 }
 
-.options { margin: 1.5rem 0; font-size: 0.9rem; }
+.options {
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column; /* Coloca as opções uma embaixo da outra */
+    align-items: flex-start; /* Alinha à esquerda dentro do card */
+    gap: 0.75rem; /* Espaçamento entre as opções */
+    padding: 0 1rem; /* Pequeno preenchimento para não colar nas bordas */
+}
 
+/* Botões */
 .btn {
     width: 100%;
     padding: 15px;
@@ -182,15 +175,57 @@ input[type="text"]:focus {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.choice-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+/* Estilos da Tela de Jogo */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    font-weight: 500;
+    min-height: 24px;
+    color: var(--light-color);
+    margin-bottom: 0.5rem;
+}
+
+#game-info-text {
+    display: block; /* Garante que o span ocupe a linha inteira */
+    min-height: 24px;
+    margin-bottom: 1rem;
+}
+
+.player-score {
+    background-color: rgba(0,0,0,0.3);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+}
+
+.player-score .player-name {
+    font-weight: 300;
+}
+
+.player-score .score {
+    font-weight: 700;
+    color: var(--skip-color);
+    font-size: 1.1rem;
+}
+
+.choice-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
 .btn-truth { background-color: #3498db; }
 .btn-dare { background-color: #e74c3c; }
 
+/* Estilos da Roleta */
 .spinner-container {
     position: relative;
     width: 300px;
     height: 300px;
-    margin: 1rem auto; /* Reduzido */
+    margin: 1rem auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -257,15 +292,73 @@ input[type="text"]:focus {
     z-index: 1;
 }
 
-.player-position.top { top: 30px; left: 50%; transform: translateX(-50%); }
-.player-position.bottom { bottom: 30px; left: 50%; transform: translateX(-50%); }
+.player-position.top {
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-#result-type { color: var(--primary-color); margin-bottom: 1rem; }
-#result-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem; min-height: 80px; }
-.action-buttons { display: flex; gap: 1rem; }
-.btn-skip { background-color: var(--skip-color); }
-.btn-skip:hover { box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
+.player-position.bottom {
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
+/* Estilos da Tela de Resultado */
+#result-type {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+#result-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 80px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-skip {
+    background-color: var(--skip-color);
+}
+
+.btn-skip:hover {
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+}
+
+/* Estilo para a tela de consequência */
+.consequence-title {
+    color: var(--skip-color); /* Laranja para combinar com o tema de "punição" */
+    font-size: 2.2rem;
+}
+
+#consequence-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 80px;
+    color: var(--light-color);
+}
+
+/* Estilo para a tela de evento */
+.event-title {
+    color: #f1c40f; /* Um dourado para Sorte/Azar */
+    font-size: 2.2rem;
+}
+
+#event-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 80px;
+    color: var(--light-color);
+}
+
+/* ESTILOS PARA SELEÇÃO DE MODO */
 .game-mode-selection {
     text-align: left;
     margin: 2rem 0;
@@ -282,10 +375,22 @@ input[type="text"]:focus {
     font-size: 1.1rem;
 }
 
-.radio-group { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
-.radio-group label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
 
 #level-select-wrapper { margin-top: 1rem; }
+
 .hidden { display: none !important; }
 
 select {
@@ -305,23 +410,92 @@ select:focus {
     border-color: transparent;
 }
 
-/* Estilos da Tela de Resultado */
-#result-type { color: var(--primary-color); margin-bottom: 1rem; }
-#result-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem; min-height: 80px; }
-.action-buttons { display: flex; gap: 1rem; }
-.btn-skip { background-color: var(--skip-color); }
-.btn-skip:hover { box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
+/* ESTILOS PARA REFINAMENTO */
 
-/* NOVO: Estilo para a tela de consequência */
-.consequence-title {
-    color: var(--skip-color); /* Laranja para combinar com o tema de "punição" */
-    font-size: 2.2rem;
+/* Estilo para a tela de Boas-Vindas */
+.welcome-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#consequence-text {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    min-height: 80px;
-    color: var(--light-color);
+#welcome-screen .btn {
+    max-width: 250px;
+    margin: 1rem auto 0;
+}
+
+/* Estilo para o botão de Pausa (engrenagem) */
+.pause-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+/* Estilo para o Menu de Pausa (Modal) */
+.pause-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.pause-menu:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.pause-menu .card {
+    width: 100%;
+    max-width: 400px;
+}
+
+.pause-menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#level-change-modal hr {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 1.5rem 0;
+}
+
+#level-change-modal p {
+    margin-bottom: 0.5rem;
+}
+
+#level-change-modal select {
+    margin-bottom: 1rem;
 }
