@@ -17,26 +17,65 @@
     box-sizing: border-box;
 }
 
+
+/* --- MUDANÇAS NO FUNDO E CARDS --- */
 body {
     font-family: var(--font-body);
-    background-color: var(--background-color);
-    color: var(--dark-color);
+    /* Cor de fundo sólida como fallback caso a imagem não carregue */
+    background-color: #1a1a1a; 
+    color: var(--light-color); /* Alterado para branco para melhor contraste */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    overflow: hidden; /* Previne barras de rolagem durante animações */
+    overflow: hidden;
+
+    /* A MÁGICA DO FUNDO NOVO */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../assets/background.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
 }
+
+/* Ajuste no card para efeito de "vidro fosco" */
+.card {
+    background: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+    backdrop-filter: blur(10px); /* O efeito de desfoque */
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 2rem 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    color: var(--light-color); /* Garante que o texto dentro do card seja claro */
+}
+
+/* Ajuste na cor dos títulos e subtítulos fora dos cards */
+.subtitle {
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0 10px;
+    font-weight: 500;
+    min-height: 24px;
+    color: var(--light-color);
+}
+/* --- FIM DAS MUDANÇAS --- */
+
 
 .container {
     width: 100%;
     max-width: 500px;
     text-align: center;
-    position: relative; /* Necessário para o posicionamento da notificação */
+    position: relative;
 }
 
-/* Estilos das Telas */
 .screen {
     transition: opacity 0.4s ease-in-out;
 }
@@ -45,7 +84,6 @@ body {
     opacity: 0;
 }
 
-/* --- NOVOS ESTILOS PARA A NOTIFICAÇÃO DE NÍVEL --- */
 .level-up-notification {
     position: absolute;
     top: 50%;
@@ -55,12 +93,12 @@ body {
     color: var(--light-color);
     padding: 2rem 3rem;
     border-radius: var(--border-radius);
-    z-index: 100; /* Garante que fique acima de tudo */
+    z-index: 100;
     width: 90%;
     max-width: 400px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    pointer-events: none; /* Impede que o usuário clique nela */
-    opacity: 0; /* Começa invisível */
+    pointer-events: none;
+    opacity: 0;
 }
 
 .level-up-notification.show {
@@ -83,44 +121,34 @@ body {
     80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
 }
-/* --- FIM DOS ESTILOS DA NOTIFICAÇÃO --- */
 
-
-/* Logo e Títulos */
 .logo {
     font-family: var(--font-title);
     color: var(--primary-color);
     font-size: 3rem;
 }
 
-.subtitle {
-    font-weight: 300;
-    margin-bottom: 2rem;
-}
-
 h2 {
     font-family: var(--font-title);
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
+    color: var(--light-color); /* Ajustado para branco */
 }
 
-/* Card Principal */
-.card {
-    background: var(--light-color);
-    padding: 2rem 2.5rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-}
-
-/* Formulário de Início */
 input[type="text"] {
     width: 100%;
     padding: 12px 15px;
     margin-bottom: 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--light-color);
     border-radius: 8px;
     font-family: var(--font-body);
     font-size: 1rem;
+}
+
+input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 input[type="text"]:focus {
@@ -133,7 +161,6 @@ input[type="text"]:focus {
     font-size: 0.9rem;
 }
 
-/* Botões */
 .btn {
     width: 100%;
     padding: 15px;
@@ -153,16 +180,6 @@ input[type="text"]:focus {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* Estilos da Tela de Jogo */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    padding: 0 10px;
-    font-weight: 500;
-    min-height: 24px;
-}
-
 .choice-buttons {
     display: flex;
     gap: 1rem;
@@ -172,7 +189,6 @@ input[type="text"]:focus {
 .btn-truth { background-color: #3498db; }
 .btn-dare { background-color: #e74c3c; }
 
-/* Estilos da Roleta */
 .spinner-container {
     position: relative;
     width: 300px;
@@ -181,9 +197,9 @@ input[type="text"]:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0,0,0,0.02);
+    background-color: rgba(0,0,0,0.1);
     border-radius: 50%;
-    border: 1px solid #eee;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bottle {
@@ -231,13 +247,13 @@ input[type="text"]:focus {
     border-radius: 2px;
 }
 
-
 .player-position {
     position: absolute;
     width: 120px;
     padding: 8px 12px;
-    background-color: var(--light-color);
-    border: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: var(--dark-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--border-radius);
     font-weight: 500;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -256,7 +272,6 @@ input[type="text"]:focus {
     transform: translateX(-50%);
 }
 
-/* Estilos da Tela de Resultado */
 #result-type {
     color: var(--primary-color);
     margin-bottom: 1rem;
@@ -282,13 +297,11 @@ input[type="text"]:focus {
     box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
 }
 
-
-/* ESTILOS PARA SELEÇÃO DE MODO */
 .game-mode-selection {
     text-align: left;
     margin: 2rem 0;
     padding: 1.5rem;
-    border: 1px solid #eee;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--border-radius);
 }
 
@@ -321,11 +334,12 @@ input[type="text"]:focus {
 select {
     width: 100%;
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     font-family: var(--font-body);
     font-size: 1rem;
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--light-color);
     cursor: pointer;
 }
 
