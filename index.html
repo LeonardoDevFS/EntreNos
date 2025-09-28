@@ -27,56 +27,31 @@
                 <h2>Quem está jogando?</h2>
                 <input type="text" id="player1-name" placeholder="Nome do Jogador 1" required>
                 <input type="text" id="player2-name" placeholder="Nome do Jogador 2" required>
-            
                 <div class="game-mode-selection">
                     <h3>Como vocês querem jogar?</h3>
                     <div class="radio-group">
-                        <label>
-                            <input type="radio" name="game-mode" value="progression" checked>
-                            Modo Progressão
-                        </label>
-                        <label>
-                            <input type="radio" name="game-mode" value="choose-level">
-                            Escolher Nível
-                        </label>
+                        <label><input type="radio" name="game-mode" value="progression" checked> Modo Progressão</label>
+                        <label><input type="radio" name="game-mode" value="choose-level"> Escolher Nível</label>
                     </div>
-                    <div id="level-select-wrapper" class="hidden">
-                        <select id="level-select">
-                            <option value="1">Nível 1: Fofinho</option>
-                            <option value="2">Nível 2: Romântico</option>
-                            <option value="3">Nível 3: Pimentinha</option>
-                            <option value="4">Nível 4: Toques</option>
-                            <option value="5">Nível 5: Intenso</option>
-                        </select>
-                    </div>
+                    <div id="level-select-wrapper" class="hidden"><select id="level-select"><option value="1">Nível 1: Fofinho</option><option value="2">Nível 2: Romântico</option><option value="3">Nível 3: Pimentinha</option><option value="4">Nível 4: Toques</option><option value="5">Nível 5: Intenso</option></select></div>
                 </div>
-                
-                <div class="options">
-                    <label for="drink-option">
-                        <input type="checkbox" id="drink-option" checked>
-                        Habilitar opção de bebida?
-                    </label>
-                </div>
-            
+                <div class="options"><label for="drink-option"><input type="checkbox" id="drink-option" checked> Habilitar opção de bebida?</label></div>
                 <button id="start-game-btn" class="btn">Começar o Jogo</button>
             </main>
         </section>
 
         <section id="game-screen" class="screen hidden">
             <div class="game-header">
-                <span id="game-info-text">Clique na garrafa para girar!</span>
+                <div class="player-score" id="player1-score-display"><span class="player-name"></span>: <span class="score">0</span></div>
                 <span id="current-level">Nível 1</span>
+                <div class="player-score" id="player2-score-display"><span class="player-name"></span>: <span class="score">0</span></div>
             </div>
-        
+            <span id="game-info-text">Clique na garrafa para girar!</span>
             <div class="spinner-container">
                 <div id="player2-position" class="player-position top"></div> 
-                <div id="bottle" class="bottle">
-                    <div class="bottle-neck"></div>
-                    <div class="bottle-pointer"></div>
-                </div>
+                <div id="bottle" class="bottle"><div class="bottle-neck"></div><div class="bottle-pointer"></div></div>
                 <div id="player1-position" class="player-position bottom"></div>
             </div>
-        
             <div id="choice-container" class="hidden">
                 <h2 id="turn-title">Sua vez, [Nome]!</h2>
                 <p>O que você escolhe?</p>
@@ -90,18 +65,28 @@
         <section id="result-screen" class="screen hidden">
             <div class="card result-card">
                 <h3 id="result-type">Verdade</h3>
-                <p id="result-text">Aqui aparecerá o texto da pergunta ou do desafio.</p>
+                <p id="result-text"></p>
                 <div class="action-buttons">
                     <button id="next-turn-btn" class="btn">Feito!</button>
                     <button id="skip-btn" class="btn btn-skip hidden">Pular / Beber</button>
                 </div>
             </div>
         </section>
+        
+        <section id="consequence-screen" class="screen hidden">
+            <div class="card consequence-card">
+                <h2 class="consequence-title">Consequência!</h2>
+                <p id="consequence-text"></p>
+                <button id="consequence-done-btn" class="btn">Cumprido!</button>
+            </div>
+        </section>
+
     </div>
 
     <audio id="spin-sound" src="audio/spin.mp3" preload="auto"></audio>
     <audio id="click-sound" src="audio/click.mp3" preload="auto"></audio>
     <audio id="level-up-sound" src="audio/levelup.mp3" preload="auto"></audio>
+
     <script src="js/game.js"></script>
     <script src="js/ui.js"></script>
 </body>

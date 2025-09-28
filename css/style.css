@@ -17,57 +17,76 @@
     box-sizing: border-box;
 }
 
-
-/* --- MUDANÇAS NO FUNDO E CARDS --- */
 body {
     font-family: var(--font-body);
-    /* Cor de fundo sólida como fallback caso a imagem não carregue */
     background-color: #1a1a1a; 
-    color: var(--light-color); /* Alterado para branco para melhor contraste */
+    color: var(--light-color);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
     overflow: hidden;
-
-    /* A MÁGICA DO FUNDO NOVO */
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../assets/background.jpg');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
 }
 
-/* Ajuste no card para efeito de "vidro fosco" */
 .card {
-    background: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
-    backdrop-filter: blur(10px); /* O efeito de desfoque */
-    -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 2rem 2.5rem;
     border-radius: var(--border-radius);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    color: var(--light-color); /* Garante que o texto dentro do card seja claro */
+    color: var(--light-color);
 }
 
-/* Ajuste na cor dos títulos e subtítulos fora dos cards */
 .subtitle {
     font-weight: 300;
     margin-bottom: 2rem;
     color: rgba(255, 255, 255, 0.8);
 }
 
+/* --- MUDANÇAS NO HEADER DO JOGO --- */
 .game-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    align-items: center;
     padding: 0 10px;
     font-weight: 500;
     min-height: 24px;
     color: var(--light-color);
+    margin-bottom: 0.5rem; /* Reduzido */
+}
+
+#game-info-text {
+    display: block; /* Garante que o span ocupe a linha inteira */
+    min-height: 24px;
+    margin-bottom: 1rem;
+}
+
+/* NOVO: Estilos do Placar */
+.player-score {
+    background-color: rgba(0,0,0,0.3);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+}
+
+.player-score .player-name {
+    font-weight: 300;
+}
+
+.player-score .score {
+    font-weight: 700;
+    color: var(--skip-color);
+    font-size: 1.1rem;
 }
 /* --- FIM DAS MUDANÇAS --- */
-
 
 .container {
     width: 100%;
@@ -76,13 +95,8 @@ body {
     position: relative;
 }
 
-.screen {
-    transition: opacity 0.4s ease-in-out;
-}
-
-.screen.fading {
-    opacity: 0;
-}
+.screen { transition: opacity 0.4s ease-in-out; }
+.screen.fading { opacity: 0; }
 
 .level-up-notification {
     position: absolute;
@@ -101,19 +115,13 @@ body {
     opacity: 0;
 }
 
-.level-up-notification.show {
-    animation: fadeInOut 3s ease-in-out forwards;
-}
-
+.level-up-notification.show { animation: fadeInOut 3s ease-in-out forwards; }
 #level-up-notification h2 {
     font-family: var(--font-title);
     color: var(--skip-color);
     margin-bottom: 0.5rem;
 }
-
-#level-up-notification p {
-    font-weight: 300;
-}
+#level-up-notification p { font-weight: 300; }
 
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
@@ -132,7 +140,7 @@ h2 {
     font-family: var(--font-title);
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    color: var(--light-color); /* Ajustado para branco */
+    color: var(--light-color);
 }
 
 input[type="text"] {
@@ -147,19 +155,13 @@ input[type="text"] {
     font-size: 1rem;
 }
 
-input[type="text"]::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
+input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.5); }
 input[type="text"]:focus {
     outline: 2px solid var(--primary-color);
     border-color: transparent;
 }
 
-.options {
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-}
+.options { margin: 1.5rem 0; font-size: 0.9rem; }
 
 .btn {
     width: 100%;
@@ -180,12 +182,7 @@ input[type="text"]:focus {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.choice-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
+.choice-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
 .btn-truth { background-color: #3498db; }
 .btn-dare { background-color: #e74c3c; }
 
@@ -193,7 +190,7 @@ input[type="text"]:focus {
     position: relative;
     width: 300px;
     height: 300px;
-    margin: 2rem auto;
+    margin: 1rem auto; /* Reduzido */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -260,42 +257,14 @@ input[type="text"]:focus {
     z-index: 1;
 }
 
-.player-position.top {
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-}
+.player-position.top { top: 30px; left: 50%; transform: translateX(-50%); }
+.player-position.bottom { bottom: 30px; left: 50%; transform: translateX(-50%); }
 
-.player-position.bottom {
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-#result-type {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
-
-#result-text {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    min-height: 80px;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 1rem;
-}
-
-.btn-skip {
-    background-color: var(--skip-color);
-}
-
-.btn-skip:hover {
-    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
-}
+#result-type { color: var(--primary-color); margin-bottom: 1rem; }
+#result-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem; min-height: 80px; }
+.action-buttons { display: flex; gap: 1rem; }
+.btn-skip { background-color: var(--skip-color); }
+.btn-skip:hover { box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
 
 .game-mode-selection {
     text-align: left;
@@ -313,22 +282,10 @@ input[type="text"]:focus {
     font-size: 1.1rem;
 }
 
-.radio-group {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-.radio-group label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
+.radio-group { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
+.radio-group label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
 
 #level-select-wrapper { margin-top: 1rem; }
-
 .hidden { display: none !important; }
 
 select {
@@ -346,4 +303,25 @@ select {
 select:focus {
     outline: 2px solid var(--primary-color);
     border-color: transparent;
+}
+
+/* Estilos da Tela de Resultado */
+#result-type { color: var(--primary-color); margin-bottom: 1rem; }
+#result-text { font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem; min-height: 80px; }
+.action-buttons { display: flex; gap: 1rem; }
+.btn-skip { background-color: var(--skip-color); }
+.btn-skip:hover { box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
+
+/* NOVO: Estilo para a tela de consequência */
+.consequence-title {
+    color: var(--skip-color); /* Laranja para combinar com o tema de "punição" */
+    font-size: 2.2rem;
+}
+
+#consequence-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 80px;
+    color: var(--light-color);
 }

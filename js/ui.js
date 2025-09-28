@@ -1,15 +1,14 @@
 // Responsável por manipular o HTML e interagir com o usuário.
 
 // Mapeamento dos elementos do HTML
-// ... (telas)
 const setupScreen = document.getElementById('setup-screen');
 const gameScreen = document.getElementById('game-screen');
 const resultScreen = document.getElementById('result-screen');
+const consequenceScreen = document.getElementById('consequence-screen');
 const levelUpNotification = document.getElementById('level-up-notification');
 const levelUpTitle = document.getElementById('level-up-title');
 const levelUpSubtitle = document.getElementById('level-up-subtitle');
 
-// ... (setup)
 const player1NameInput = document.getElementById('player1-name');
 const player2NameInput = document.getElementById('player2-name');
 const drinkOptionCheckbox = document.getElementById('drink-option');
@@ -18,7 +17,6 @@ const gameModeRadios = document.querySelectorAll('input[name="game-mode"]');
 const levelSelectWrapper = document.getElementById('level-select-wrapper');
 const levelSelect = document.getElementById('level-select');
 
-// ... (jogo)
 const currentLevelSpan = document.getElementById('current-level');
 const gameInfoText = document.getElementById('game-info-text');
 const bottle = document.getElementById('bottle');
@@ -29,13 +27,16 @@ const turnTitle = document.getElementById('turn-title');
 const truthBtn = document.getElementById('truth-btn');
 const dareBtn = document.getElementById('dare-btn');
 
-// ... (resultado)
 const resultType = document.getElementById('result-type');
 const resultText = document.getElementById('result-text');
 const nextTurnBtn = document.getElementById('next-turn-btn');
 const skipBtn = document.getElementById('skip-btn');
+const consequenceText = document.getElementById('consequence-text');
+const consequenceDoneBtn = document.getElementById('consequence-done-btn');
 
-// NOVO: Seletores para os elementos de áudio
+const player1ScoreDisplay = document.getElementById('player1-score-display');
+const player2ScoreDisplay = document.getElementById('player2-score-display');
+
 const spinSound = document.getElementById('spin-sound');
 const clickSound = document.getElementById('click-sound');
 const levelUpSound = document.getElementById('level-up-sound');
@@ -45,9 +46,8 @@ let lastBottleAngle = 0;
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// NOVO: Função reutilizável para tocar sons
 function playSound(soundElement) {
-    soundElement.currentTime = 0; // Reinicia o som para o caso de ser tocado de novo rapidamente
+    soundElement.currentTime = 0;
     soundElement.play();
 }
 
@@ -93,16 +93,14 @@ startGameBtn.addEventListener('click', () => {
     const gameCanStart = startGame(player1, player2, drinksEnabled, selectedMode, selectedLevel);
 
     if (gameCanStart) {
-        player1Position.textContent = players[0];
-        player2Position.textContent = players[1];
+        player1Position.textContent = getPlayers()[0];
+        player2Position.textContent = getPlayers()[1];
         updateGameScreen();
         showScreen('game-screen');
     }
 });
 
-bottle.addEventListener('click', () => {
-    if (!isSpinning) spinBottle();
-});
+bottle.addEventListener('click', () => { if (!isSpinning) spinBottle(); });
 
 const levelSubtitles = {
     2: "As coisas estão ficando mais românticas...",
@@ -112,42 +110,33 @@ const levelSubtitles = {
 };
 
 async function showLevelUpAnimation(newLevel) {
-    playSound(levelUpSound); // Toca o som de level up
+    playSound(levelUpSound);
     levelUpTitle.textContent = `Nível ${newLevel}`;
     levelUpSubtitle.textContent = levelSubtitles[newLevel] || "Prepare-se!";
-    
     levelUpNotification.classList.remove('hidden');
     levelUpNotification.classList.add('show');
-    
     await wait(3000);
-    
     levelUpNotification.classList.remove('show');
     levelUpNotification.classList.add('hidden');
 }
 
 async function spinBottle() {
     isSpinning = true;
-    playSound(spinSound); // Toca o som da roleta
+    playSound(spinSound);
     gameInfoText.textContent = 'Girando...';
     choiceContainer.classList.add('hidden');
-
     const leveledUp = nextTurn();
-
     if (leveledUp) {
         await showLevelUpAnimation(getCurrentLevel());
     }
-
     const targetPlayerIndex = currentPlayerIndex;
     const angleToTargetPlayer = (targetPlayerIndex === 0) ? 180 : 0;
     const randomFullSpins = Math.floor(Math.random() * 4) + 3;
     const rotationAmount = (randomFullSpins * 360) + angleToTargetPlayer;
     const newRotation = lastBottleAngle + rotationAmount;
-
     bottle.style.transform = `rotate(${newRotation}deg)`;
     lastBottleAngle = newRotation;
-    
     await wait(4000);
-
     updateGameScreen();
     gameInfoText.textContent = '';
     choiceContainer.classList.remove('hidden');
@@ -161,18 +150,32 @@ function proceedToNextRound() {
 }
 
 nextTurnBtn.addEventListener('click', proceedToNextRound);
-skipBtn.addEventListener('click', proceedToNextRound);
+
+skipBtn.addEventListener('click', async () => {
+    const result = addSkipPoint();
+    updateScoreDisplay();
+
+    if (result === 'consequence') {
+        const dare = await getConsequence();
+        consequenceText.textContent = dare;
+        showScreen('consequence-screen');
+    } else {
+        proceedToNextRound();
+    }
+});
+
+consequenceDoneBtn.addEventListener('click', () => {
+    proceedToNextRound();
+});
 
 async function showResult(type, content) {
     resultType.textContent = type;
     resultText.textContent = content;
-
     if (isDrinkOptionEnabled()) {
         skipBtn.classList.remove('hidden');
     } else {
         skipBtn.classList.add('hidden');
     }
-
     showScreen('result-screen');
 }
 
@@ -186,18 +189,29 @@ dareBtn.addEventListener('click', async () => {
     showResult('Desafio', challenge);
 });
 
-// NOVO: Adiciona som de clique para todos os botões com a classe .btn
 document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', () => {
         playSound(clickSound);
     });
 });
 
+function updateScoreDisplay() {
+    const currentScores = getScores();
+    const playerNames = getPlayers();
+    
+    player1ScoreDisplay.querySelector('.player-name').textContent = playerNames[0];
+    player1ScoreDisplay.querySelector('.score').textContent = currentScores[0];
+
+    player2ScoreDisplay.querySelector('.player-name').textContent = playerNames[1];
+    player2ScoreDisplay.querySelector('.score').textContent = currentScores[1];
+}
+
 function updateGameScreen() {
     const currentPlayerName = getCurrentPlayer();
     const level = getCurrentLevel();
     turnTitle.textContent = `Sua vez, ${currentPlayerName}!`;
     currentLevelSpan.textContent = `Nível ${level}`;
+    updateScoreDisplay();
 }
 
 initializeUI();
