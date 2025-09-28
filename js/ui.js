@@ -5,7 +5,6 @@
 const setupScreen = document.getElementById('setup-screen');
 const gameScreen = document.getElementById('game-screen');
 const resultScreen = document.getElementById('result-screen');
-// NOVO: Notificação
 const levelUpNotification = document.getElementById('level-up-notification');
 const levelUpTitle = document.getElementById('level-up-title');
 const levelUpSubtitle = document.getElementById('level-up-subtitle');
@@ -36,10 +35,21 @@ const resultText = document.getElementById('result-text');
 const nextTurnBtn = document.getElementById('next-turn-btn');
 const skipBtn = document.getElementById('skip-btn');
 
+// NOVO: Seletores para os elementos de áudio
+const spinSound = document.getElementById('spin-sound');
+const clickSound = document.getElementById('click-sound');
+const levelUpSound = document.getElementById('level-up-sound');
+
 let isSpinning = false;
 let lastBottleAngle = 0;
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// NOVO: Função reutilizável para tocar sons
+function playSound(soundElement) {
+    soundElement.currentTime = 0; // Reinicia o som para o caso de ser tocado de novo rapidamente
+    soundElement.play();
+}
 
 async function showScreen(screenId) {
     const activeScreen = document.querySelector('.screen:not(.hidden)');
@@ -94,7 +104,6 @@ bottle.addEventListener('click', () => {
     if (!isSpinning) spinBottle();
 });
 
-// NOVO: Textos para cada nível
 const levelSubtitles = {
     2: "As coisas estão ficando mais românticas...",
     3: "Prepare-se para apimentar um pouco...",
@@ -102,15 +111,14 @@ const levelSubtitles = {
     5: "Agora o jogo é para os fortes!"
 };
 
-// NOVO: Função para mostrar a notificação
 async function showLevelUpAnimation(newLevel) {
+    playSound(levelUpSound); // Toca o som de level up
     levelUpTitle.textContent = `Nível ${newLevel}`;
     levelUpSubtitle.textContent = levelSubtitles[newLevel] || "Prepare-se!";
     
     levelUpNotification.classList.remove('hidden');
     levelUpNotification.classList.add('show');
     
-    // A animação dura 3 segundos (definido no CSS)
     await wait(3000);
     
     levelUpNotification.classList.remove('show');
@@ -119,10 +127,11 @@ async function showLevelUpAnimation(newLevel) {
 
 async function spinBottle() {
     isSpinning = true;
+    playSound(spinSound); // Toca o som da roleta
     gameInfoText.textContent = 'Girando...';
     choiceContainer.classList.add('hidden');
 
-    const leveledUp = nextTurn(); // Pega o resultado: true ou false
+    const leveledUp = nextTurn();
 
     if (leveledUp) {
         await showLevelUpAnimation(getCurrentLevel());
@@ -175,6 +184,13 @@ truthBtn.addEventListener('click', async () => {
 dareBtn.addEventListener('click', async () => {
     const challenge = await getQuestion('dare');
     showResult('Desafio', challenge);
+});
+
+// NOVO: Adiciona som de clique para todos os botões com a classe .btn
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', () => {
+        playSound(clickSound);
+    });
 });
 
 function updateGameScreen() {
