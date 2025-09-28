@@ -1,0 +1,335 @@
+/* Definição de variáveis de cor e fontes para fácil customização */
+:root {
+    --primary-color: #A62424; /* Um vermelho sofisticado */
+    --background-color: #F8F4F4; /* Um branco levemente rosado/bege */
+    --dark-color: #333333;
+    --light-color: #FFFFFF;
+    --skip-color: #f39c12; /* Laranja para o botão de pular */
+    --border-radius: 12px;
+    --font-title: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
+}
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--background-color);
+    color: var(--dark-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden; /* Previne barras de rolagem durante animações */
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    position: relative; /* Necessário para o posicionamento da notificação */
+}
+
+/* Estilos das Telas */
+.screen {
+    transition: opacity 0.4s ease-in-out;
+}
+
+.screen.fading {
+    opacity: 0;
+}
+
+/* --- NOVOS ESTILOS PARA A NOTIFICAÇÃO DE NÍVEL --- */
+.level-up-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: var(--light-color);
+    padding: 2rem 3rem;
+    border-radius: var(--border-radius);
+    z-index: 100; /* Garante que fique acima de tudo */
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    pointer-events: none; /* Impede que o usuário clique nela */
+    opacity: 0; /* Começa invisível */
+}
+
+.level-up-notification.show {
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+#level-up-notification h2 {
+    font-family: var(--font-title);
+    color: var(--skip-color);
+    margin-bottom: 0.5rem;
+}
+
+#level-up-notification p {
+    font-weight: 300;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+/* --- FIM DOS ESTILOS DA NOTIFICAÇÃO --- */
+
+
+/* Logo e Títulos */
+.logo {
+    font-family: var(--font-title);
+    color: var(--primary-color);
+    font-size: 3rem;
+}
+
+.subtitle {
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-family: var(--font-title);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+/* Card Principal */
+.card {
+    background: var(--light-color);
+    padding: 2rem 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Formulário de Início */
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+}
+
+input[type="text"]:focus {
+    outline: 2px solid var(--primary-color);
+    border-color: transparent;
+}
+
+.options {
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+}
+
+/* Botões */
+.btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Estilos da Tela de Jogo */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0 10px;
+    font-weight: 500;
+    min-height: 24px;
+}
+
+.choice-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-truth { background-color: #3498db; }
+.btn-dare { background-color: #e74c3c; }
+
+/* Estilos da Roleta */
+.spinner-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 2rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.02);
+    border-radius: 50%;
+    border: 1px solid #eee;
+}
+
+.bottle {
+    width: 60px;
+    height: 180px;
+    background-color: var(--primary-color);
+    border-radius: 30px 30px 5px 5px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+    transition: transform 4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.bottle-neck {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 40px;
+    background-color: var(--primary-color);
+    border-radius: 10px 10px 0 0;
+}
+
+.bottle-neck::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 8px;
+    background-color: #8c1d1d;
+    border-radius: 5px;
+}
+
+.bottle-pointer {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 15px;
+    height: 15px;
+    background-color: var(--dark-color);
+    border-radius: 2px;
+}
+
+
+.player-position {
+    position: absolute;
+    width: 120px;
+    padding: 8px 12px;
+    background-color: var(--light-color);
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    z-index: 1;
+}
+
+.player-position.top {
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.player-position.bottom {
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Estilos da Tela de Resultado */
+#result-type {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+#result-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 80px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-skip {
+    background-color: var(--skip-color);
+}
+
+.btn-skip:hover {
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+}
+
+
+/* ESTILOS PARA SELEÇÃO DE MODO */
+.game-mode-selection {
+    text-align: left;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px solid #eee;
+    border-radius: var(--border-radius);
+}
+
+.game-mode-selection h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+#level-select-wrapper { margin-top: 1rem; }
+
+.hidden { display: none !important; }
+
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: 2px solid var(--primary-color);
+    border-color: transparent;
+}

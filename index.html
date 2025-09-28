@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entre Nós - O Jogo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="level-up-notification" class="level-up-notification hidden">
+            <h2 id="level-up-title">Nível 2</h2>
+            <p id="level-up-subtitle">As coisas estão esquentando...</p>
+        </div>
+        <section id="setup-screen" class="screen">
+            <header>
+                <h1 class="logo">Entre Nós</h1>
+                <p class="subtitle">O jogo para apimentar a relação.</p>
+            </header>
+            <main class="card">
+                <h2>Quem está jogando?</h2>
+                <input type="text" id="player1-name" placeholder="Nome do Jogador 1" required>
+                <input type="text" id="player2-name" placeholder="Nome do Jogador 2" required>
+            
+                <div class="game-mode-selection">
+                    <h3>Como vocês querem jogar?</h3>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="game-mode" value="progression" checked>
+                            Modo Progressão
+                        </label>
+                        <label>
+                            <input type="radio" name="game-mode" value="choose-level">
+                            Escolher Nível
+                        </label>
+                    </div>
+                    <div id="level-select-wrapper" class="hidden">
+                        <select id="level-select">
+                            <option value="1">Nível 1: Fofinho</option>
+                            <option value="2">Nível 2: Romântico</option>
+                            <option value="3">Nível 3: Pimentinha</option>
+                            <option value="4">Nível 4: Toques</option>
+                            <option value="5">Nível 5: Intenso</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="options">
+                    <label for="drink-option">
+                        <input type="checkbox" id="drink-option" checked>
+                        Habilitar opção de bebida?
+                    </label>
+                </div>
+            
+                <button id="start-game-btn" class="btn">Começar o Jogo</button>
+            </main>
+        </section>
+
+        <section id="game-screen" class="screen hidden">
+            <div class="game-header">
+                <span id="game-info-text">Clique na garrafa para girar!</span>
+                <span id="current-level">Nível 1</span>
+            </div>
+        
+            <div class="spinner-container">
+                <div id="player2-position" class="player-position top"></div> 
+                <div id="bottle" class="bottle">
+                    <div class="bottle-neck"></div>
+                    <div class="bottle-pointer"></div>
+                </div>
+                <div id="player1-position" class="player-position bottom"></div>
+            </div>
+        
+            <div id="choice-container" class="hidden">
+                <h2 id="turn-title">Sua vez, [Nome]!</h2>
+                <p>O que você escolhe?</p>
+                <div class="choice-buttons">
+                    <button id="truth-btn" class="btn btn-truth">Verdade</button>
+                    <button id="dare-btn" class="btn btn-dare">Desafio</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="result-screen" class="screen hidden">
+            <div class="card result-card">
+                <h3 id="result-type">Verdade</h3>
+                <p id="result-text">Aqui aparecerá o texto da pergunta ou do desafio.</p>
+                <div class="action-buttons">
+                    <button id="next-turn-btn" class="btn">Feito!</button>
+                    <button id="skip-btn" class="btn btn-skip hidden">Pular / Beber</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
